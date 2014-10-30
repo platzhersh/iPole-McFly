@@ -1,4 +1,4 @@
-// Copyright 2007-2014 metaio GmbH. All rights reserved.
+// Copyright 2007-2014 Metaio GmbH. All rights reserved.
 package com.metaio.sdk;
 
 import java.io.File;
@@ -31,7 +31,9 @@ public class ARELActivity extends ARViewActivity
 {
 
 	/**
-	 * Intent extra key for the AREL scene file path. Append this to getPackageName() when using.
+	 * Intent extra key for the AREL scene file path (File object). 
+	 * Append this to getPackageName(), e.g.
+	 * <p><code>intent.putExtra(getPackageName()+ARELActivity.INTENT_EXTRA_AREL_SCENE, filepath);</code>
 	 */
 	public static final String INTENT_EXTRA_AREL_SCENE = ".AREL_SCENE";
 
@@ -234,10 +236,10 @@ public class ARELActivity extends ARViewActivity
 			public void run()
 			{
 
-				final String filepath = getIntent().getStringExtra(getPackageName() + INTENT_EXTRA_AREL_SCENE);
+				final File filepath = (File)getIntent().getSerializableExtra(getPackageName() + INTENT_EXTRA_AREL_SCENE);
 				if (filepath != null)
 				{
-					MetaioDebug.log("Loading AREL file: " + filepath);
+					MetaioDebug.log("Loading AREL file: " + filepath.getPath());
 					mARELInterpreter.loadARELFile(filepath);
 				}
 				else
@@ -262,7 +264,7 @@ public class ARELActivity extends ARViewActivity
 		MetaioDebug.log("MetaioSDKCallbackHandler.onGeometryTouched: " + geometry);
 	}
 
-	public void onScreenshot(Bitmap bitmap, boolean saveToGalleryWithoutDialog)
+	public boolean onScreenshot(Bitmap bitmap, boolean saveToGalleryWithoutDialog)
 	{
 		// Write to external storage so the file is accessible by other applications
 		final String cacheDirPath = new File(getExternalCacheDir(), "screenshots").getAbsolutePath();
@@ -291,8 +293,8 @@ public class ARELActivity extends ARViewActivity
 					// optionally, set some text to the intent that will be used to share the
 					// screenshot
 					Intent sharingIntent = new Intent();
-					sharingIntent.putExtra(Intent.EXTRA_TEXT, "Check this screenshot! #junaio");
-					sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "My cool screenshot made with my cool app #junaio");
+					sharingIntent.putExtra(Intent.EXTRA_TEXT, "Check this screenshot!");
+					sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "My cool screenshot made with my cool app");
 
 					fragment.setSharingIntent(sharingIntent);
 
@@ -301,7 +303,8 @@ public class ARELActivity extends ARViewActivity
 				else
 				{
 					// Save the screenshot to the gallery directly
-					MetaioCloudUtils.saveScreenshot(bitmap, getApplicationContext());
+                    ShareScreenshotFragment.saveScreenShot(bitmap, this, true, R.drawable.icon_placeholder,
+                            getString(R.string.MSGI_IMAGE_SAVED), getString(R.string.BTN_VIEW_IMAGE));
 				}
 			}
 			else
@@ -314,12 +317,14 @@ public class ARELActivity extends ARViewActivity
 			MetaioDebug.log(Log.ERROR, "onScreenshot: Exception when saving screenshot");
 			MetaioDebug.printStackTrace(Log.ERROR, e);
 		}
+		
+		return true;
 	}
 
 	/**
 	 * Default implementation of IARELInterpreterCallback
 	 */
-	public class ARELInterpreterCallback extends IARELInterpreterCallback
+	class ARELInterpreterCallback extends IARELInterpreterCallback
 	{
 		@Override
 		public void onSDKReady()
@@ -328,11 +333,11 @@ public class ARELActivity extends ARViewActivity
 		}
 
 		@Override
-		public void shareScreenshot(ByteBuffer image, boolean saveToGalleryWithoutDialog)
+		public boolean shareScreenshot(ByteBuffer image, boolean saveToGalleryWithoutDialog)
 		{
 			byte[] bytearray = image.getBuffer();
 			Bitmap bitmap = BitmapFactory.decodeByteArray(bytearray, 0, bytearray.length);
-			ARELActivity.this.onScreenshot(bitmap, saveToGalleryWithoutDialog);
+			return ARELActivity.this.onScreenshot(bitmap, saveToGalleryWithoutDialog);
 		}
 	}
 }

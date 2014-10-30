@@ -1,6 +1,7 @@
-// Copyright 2007-2014 metaio GmbH. All rights reserved.
+// Copyright 2007-2014 Metaio GmbH. All rights reserved.
 package com.metaio.sdk;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -32,9 +33,10 @@ import com.metaio.tools.SystemInfo;
 
 /**
  * This is base activity to use metaio SDK. It creates metaio GLSurfaceView and handle all its
- * callbacks and lifecycle.
+ * callbacks and lifecycle. Feel free to change the base class to other kind of Activity like ActionBarActivity from the AppCompat library
  * 
  */
+@TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
 public abstract class ARViewActivity extends FragmentActivity implements MetaioSurfaceView.Callback, OnTouchListener
 {
 	protected static boolean nativeLibsLoaded;
@@ -54,11 +56,6 @@ public abstract class ARViewActivity extends FragmentActivity implements MetaioS
 	 * i.e. Android 4.2+)
 	 */
 	private DisplayManager.DisplayListener mDisplayListener;
-
-	/**
-	 * Used to register/unregister mDisplayListener on resume/pause
-	 */
-	private DisplayManager mDisplayManager;
 
 	/**
 	 * Sensor manager
@@ -116,35 +113,17 @@ public abstract class ARViewActivity extends FragmentActivity implements MetaioS
 	protected abstract void onGeometryTouched(IGeometry geometry);
 
 	/**
-	 * Start camera. Override this to change camera or its parameters such as resolution, image flip
-	 * or frame rate
+	 * Start the default back facing camera. 
+	 * Override this to change camera or its parameters such as resolution, image flip
+	 * or frame rate.
+	 * 
 	 */
 	protected void startCamera()
 	{
-		final CameraVector cameras = metaioSDK.getCameraList();
-		if (!cameras.isEmpty())
-		{
-			com.metaio.sdk.jni.Camera camera = cameras.get(0);
-
-			// Choose back facing camera
-			for (int i = 0; i < cameras.size(); i++)
-			{
-				if (cameras.get(i).getFacing() == Camera.FACE_BACK)
-				{
-					camera = cameras.get(i);
-					break;
-				}
-			}
-
-			metaioSDK.startCamera(camera);
-		}
-		else
-		{
-			MetaioDebug.log(Log.WARN, "No camera found on the device!");
-		}
+		metaioSDK.startCamera(Camera.FACE_BACK);
 	}
 
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	@SuppressLint("InlinedApi")
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -152,6 +131,7 @@ public abstract class ARViewActivity extends FragmentActivity implements MetaioS
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		MetaioDebug.log("ARViewActivity.onCreate");
 
+		mDisplayListener = null;
 		metaioSDK = null;
 		mSurfaceView = null;
 		mRendererInitialized = false;
@@ -181,9 +161,8 @@ public abstract class ARViewActivity extends FragmentActivity implements MetaioS
 					MetaioDebug.log(Log.ERROR, "ARViewActivity: error inflating the given layout: " + layout);
 			}
 
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
 			{
-				mDisplayManager = (DisplayManager)getSystemService(Context.DISPLAY_SERVICE);
 				mDisplayListener = new DisplayManager.DisplayListener()
 				{
 					@Override
@@ -238,7 +217,7 @@ public abstract class ARViewActivity extends FragmentActivity implements MetaioS
 
 	}
 
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	@SuppressLint("InlinedApi")
 	@Override
 	protected void onPause()
 	{
@@ -249,16 +228,17 @@ public abstract class ARViewActivity extends FragmentActivity implements MetaioS
 		if (mSurfaceView != null)
 			mSurfaceView.onPause();
 
-		if (mDisplayManager != null && mDisplayListener != null)
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && mDisplayListener != null)
 		{
-			mDisplayManager.unregisterDisplayListener(mDisplayListener);
+			DisplayManager displayManager = (DisplayManager)getSystemService(Context.DISPLAY_SERVICE);
+			displayManager.unregisterDisplayListener(mDisplayListener);
 		}
 
 		mActivityIsPaused = true;
 		metaioSDK.pause();
 	}
 
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	@SuppressLint("InlinedApi")
 	@Override
 	protected void onResume()
 	{
@@ -268,9 +248,10 @@ public abstract class ARViewActivity extends FragmentActivity implements MetaioS
 		metaioSDK.resume();
 		mActivityIsPaused = false;
 
-		if (mDisplayManager != null && mDisplayListener != null)
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && mDisplayListener != null)
 		{
-			mDisplayManager.registerDisplayListener(mDisplayListener, null);
+			DisplayManager displayManager = (DisplayManager)getSystemService(Context.DISPLAY_SERVICE);
+			displayManager.registerDisplayListener(mDisplayListener, null);
 		}
 
 		// Create GLSurfaceView if not yet created

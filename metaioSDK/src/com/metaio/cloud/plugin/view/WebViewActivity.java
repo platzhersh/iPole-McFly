@@ -189,8 +189,9 @@ public class WebViewActivity extends Activity
 	@Override
 	protected void onSaveInstanceState(Bundle outState)
 	{
-		super.onSaveInstanceState(outState);
-		mWebView.saveState(outState);
+            mWebView.saveState(outState);
+            super.onSaveInstanceState(outState);
+
 	}
 
 	@Override
@@ -325,13 +326,9 @@ public class WebViewActivity extends Activity
 		@Override
 		public boolean onConsoleMessage(ConsoleMessage consoleMessage)
 		{
-			int isBetaResId = getResources().getIdentifier("isBeta", "boolean", getPackageName());
-			boolean isBeta = isBetaResId > 0?getResources().getBoolean(isBetaResId):false;
-
-			// if we are in beta, display errors as toasts
-			if (MetaioCloudPlugin.isDebuggable || isBeta)
-				Toast.makeText(getApplicationContext(), consoleMessage.message(), Toast.LENGTH_LONG)
-						.show();
+			// if we are in developer mode or beta
+			if (MetaioCloudPlugin.Settings.developerMode)
+				Toast.makeText(getApplicationContext(), consoleMessage.message(), Toast.LENGTH_LONG).show();
 			MetaioCloudPlugin.log(consoleMessage.message());
 
 			return super.onConsoleMessage(consoleMessage);
