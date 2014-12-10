@@ -910,9 +910,13 @@ var myPointLight = arel.Object.Light.createLight("my_PointLight ");
     myPointLight.setCoordinateSystemID("0"); // use a string as workaround for AREL level 14 bug
     arel.Scene.addObject(myPointLight);
 
+	/* just a silly workaround - need to add something to the innerHTML to make the UI work on the Epson */
+	document.body.innerHTML += " ";
+	/*
 	document.body.innerHTML += '<div style="width: 100%; height: 40px;line-height: 40px;background-color: rgba(197, 197, 197, 0.7);"><h2 style="font-family: Helvetica;">Hello world</h2></div>';
 	document.body.innerHTML += '<div id="bottomBar" style="bottom: 0;position: fixed;width: 100%; background-color: rgba(197, 197, 197, 0.7);"><h2 style="font-family: Helvetica;">Bottom bar</h2></div>';
 	document.body.innerHTML += '<div id="help" style="position: absolute; top: 0px; right: 0px;line-height: 40px;"><h2 style="font-family: Helvetica;margin: 0 10 0 0;">?</h2></div>';
+	*/
 	
 	var helpFunction = function() { alert("Help"); };
 	document.getElementById("help").onclick=helpFunction;

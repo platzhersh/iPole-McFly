@@ -18,3 +18,29 @@ body
 {
 	background-color:rgba(255,255,255,0.24);
 }
+
+.ui-button {
+	position: absolute;
+	/*
+	width: 30px; 
+	height: 30px; 
+	line-height: 30px;
+	background-color: rgb(43, 53, 148);
+	*/
+	color: #fff;
+	text-align: center;
+	
+}
+
+#topLeft {
+	left: 20px; top: 20px; 
+}
+#topRight {
+	right: 20px; top: 20px;
+}
+#bottomLeft {
+	left: 20px; bottom: 20px;
+}
+#bottomRight {
+	right: 20px; bottom: 20px;
+}
