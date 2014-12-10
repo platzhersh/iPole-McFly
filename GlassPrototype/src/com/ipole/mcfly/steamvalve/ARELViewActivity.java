@@ -17,14 +17,12 @@ public class ARELViewActivity extends ARELActivity {
 	}
 	
 	
-	
-	@Override
 	protected void onStart() 
 	{
 	    super.onStart();
 
 	    // create and add the AREL WebView
-	    mWebView = (WebView)findViewById(R.id.arelwebview);
+	    //mWebView = (WebView)findViewById(R.id.arelwebview);
 
 	    // attach a WebView to the AREL interpreter and initialize it
 	    mARELInterpreter.initWebView(mWebView, this);
@@ -38,7 +36,7 @@ public class ARELViewActivity extends ARELActivity {
 	    
 		@JavascriptInterface
 	    public void showToast(String s){
-	        //Toast.makeText(R, s, Toast.LENGTH_SHORT).show();
+	        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
 	    }
 	}
 }
