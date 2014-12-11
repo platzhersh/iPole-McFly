@@ -1,9 +1,7 @@
 // Copyright 2007-2013 Metaio GmbH. All rights reserved.
 package com.ipole.mcfly.steamvalve;
 
-import android.view.View;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.metaio.sdk.ARELActivity;

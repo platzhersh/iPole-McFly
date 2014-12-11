@@ -53,7 +53,7 @@ public class PocketSphinxActivity extends Activity implements RecognitionListene
     private static final String FORECAST_SEARCH = "forecast";
     private static final String DIGITS_SEARCH = "digits";
     private static final String MENU_SEARCH = "menu";
-    private static final String COMMAND_SEARCH = "start command mode";
+    private static final String COMMAND_SEARCH = "command";
     private static final String KEYPHRASE = "oh mighty computer";
     
 
@@ -108,12 +108,12 @@ public class PocketSphinxActivity extends Activity implements RecognitionListene
         String text = hypothesis.getHypstr();
         if (text.equals(KEYPHRASE))
             switchSearch(MENU_SEARCH);
+        else if (text.equals(COMMAND_SEARCH))
+            switchSearch(COMMAND_SEARCH);
         else if (text.equals(DIGITS_SEARCH))
             switchSearch(DIGITS_SEARCH);
         else if (text.equals(FORECAST_SEARCH))
             switchSearch(FORECAST_SEARCH);
-        else if (text.equals(COMMAND_SEARCH))
-            switchSearch(COMMAND_SEARCH);
         else
             ((TextView) findViewById(R.id.result_text)).setText(text);
     }
@@ -164,8 +164,8 @@ public class PocketSphinxActivity extends Activity implements RecognitionListene
         File digitsGrammar = new File(modelsDir, "grammar/digits.gram");
         recognizer.addGrammarSearch(DIGITS_SEARCH, digitsGrammar);
         
-        File randomGrammar = new File(modelsDir, "grammar/command.gram");
-        recognizer.addGrammarSearch(COMMAND_SEARCH, randomGrammar);
+        File commandGrammar = new File(modelsDir, "grammar/command.gram");
+        recognizer.addGrammarSearch(COMMAND_SEARCH, commandGrammar);
         
         // Create language model search.
         File languageModel = new File(modelsDir, "lm/weather.dmp");

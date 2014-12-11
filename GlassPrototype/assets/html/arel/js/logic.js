@@ -918,10 +918,30 @@ arel.sceneReady(function() {
 	document.body.innerHTML += '<div id="help" style="position: absolute; top: 0px; right: 0px;line-height: 40px;"><h2 style="font-family: Helvetica;margin: 0 10 0 0;">?</h2></div>';
 	*/
 	
-	var toastFunctionTL = function() { window.myInterface.showToast("job description"); };
-	var toastFunctionTR = function() { window.myInterface.showToast("reporting"); };
-	var toastFunctionBL = function() { window.myInterface.showToast("status icons"); };
-	var toastFunctionBR = function() { window.myInterface.showToast("assistance call"); };
+	var toastFunctionTL = function() { 
+		document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_active.png";
+		document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_inactive.png";
+		document.getElementById("bottomLeft").getElementsByTagName("img")[0].src="img/health_safety_symbols.png";
+		document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_inactive.png";
+		window.myInterface.showToast("job description");
+	};
+	var toastFunctionTR = function() { 
+		document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_inactive.png";
+		document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_active.png";
+		document.getElementById("bottomLeft").getElementsByTagName("img")[0].src="img/health_safety_symbols.png";
+		document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_inactive.png";
+		window.myInterface.showToast("reporting"); 
+	};
+	var toastFunctionBL = function() { 
+		window.myInterface.showToast("status icons"); 
+		};
+	var toastFunctionBR = function() { 
+		document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_inactive.png";
+		document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_inactive.png";
+		document.getElementById("bottomLeft").getElementsByTagName("img")[0].src="img/video_active.png";
+		document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_active.png";
+		window.myInterface.showToast("assistance call"); 
+		};
 	
 	document.getElementById("topLeft").onclick=toastFunctionTL;
 	document.getElementById("topRight").onclick=toastFunctionTR;
