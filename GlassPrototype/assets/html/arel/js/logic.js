@@ -900,8 +900,8 @@ arel.sceneReady(function() {
 
     /**** Begin of custom global script ****/
 
-// create a light
-var myPointLight = arel.Object.Light.createLight("my_PointLight ");
+	// create a light
+	var myPointLight = arel.Object.Light.createLight("my_PointLight ");
 	myPointLight.setLightType(arel.Light.LIGHT_TYPE_POINT);
     myPointLight.setAmbientColor(new arel.Vector3D(0.5,0.5,0.5));
     //myPointLight.setAttenuation(new arel.Vector3D(0,0,60));
@@ -918,11 +918,15 @@ var myPointLight = arel.Object.Light.createLight("my_PointLight ");
 	document.body.innerHTML += '<div id="help" style="position: absolute; top: 0px; right: 0px;line-height: 40px;"><h2 style="font-family: Helvetica;margin: 0 10 0 0;">?</h2></div>';
 	*/
 	
-	var helpFunction = function() { alert("Help"); };
-	document.getElementById("help").onclick=helpFunction;
+	var toastFunctionTL = function() { window.myInterface.showToast("job description"); };
+	var toastFunctionTR = function() { window.myInterface.showToast("reporting"); };
+	var toastFunctionBL = function() { window.myInterface.showToast("status icons"); };
+	var toastFunctionBR = function() { window.myInterface.showToast("assistance call"); };
 	
-	var toastFunction = function() { window.myInterface.showToast("Hello World"); };
-	document.getElementById("bottomBar").onclick=toastFunction;
+	document.getElementById("topLeft").onclick=toastFunctionTL;
+	document.getElementById("topRight").onclick=toastFunctionTR;
+	document.getElementById("bottomLeft").onclick=toastFunctionBL;
+	document.getElementById("bottomRight").onclick=toastFunctionBR;
 
     /***** End of custom global script *****/
 });

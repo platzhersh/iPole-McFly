@@ -53,7 +53,7 @@ public class PocketSphinxActivity extends Activity implements RecognitionListene
     private static final String FORECAST_SEARCH = "forecast";
     private static final String DIGITS_SEARCH = "digits";
     private static final String MENU_SEARCH = "menu";
-    private static final String COMMAND_SEARCH = "random";
+    private static final String COMMAND_SEARCH = "start command mode";
     private static final String KEYPHRASE = "oh mighty computer";
     
 
