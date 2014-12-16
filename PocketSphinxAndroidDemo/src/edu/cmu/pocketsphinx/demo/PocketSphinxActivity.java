@@ -50,7 +50,7 @@ import edu.cmu.pocketsphinx.SpeechRecognizer;
 public class PocketSphinxActivity extends Activity implements RecognitionListener {
 
     private static final String KWS_SEARCH = "wakeup";
-    private static final String FORECAST_SEARCH = "forecast";
+    //private static final String FORECAST_SEARCH = "forecast";
     private static final String DIGITS_SEARCH = "digits";
     private static final String MENU_SEARCH = "menu";
     private static final String COMMAND_SEARCH = "command";
@@ -69,7 +69,7 @@ public class PocketSphinxActivity extends Activity implements RecognitionListene
         captions.put(KWS_SEARCH, R.string.kws_caption);
         captions.put(MENU_SEARCH, R.string.menu_caption);
         captions.put(DIGITS_SEARCH, R.string.digits_caption);
-        captions.put(FORECAST_SEARCH, R.string.forecast_caption);
+        //captions.put(FORECAST_SEARCH, R.string.forecast_caption);
         captions.put(COMMAND_SEARCH, R.string.command_caption);
         setContentView(R.layout.main);
         ((TextView) findViewById(R.id.caption_text))
@@ -112,8 +112,8 @@ public class PocketSphinxActivity extends Activity implements RecognitionListene
             switchSearch(COMMAND_SEARCH);
         else if (text.equals(DIGITS_SEARCH))
             switchSearch(DIGITS_SEARCH);
-        else if (text.equals(FORECAST_SEARCH))
-            switchSearch(FORECAST_SEARCH);
+        //else if (text.equals(FORECAST_SEARCH))
+            //switchSearch(FORECAST_SEARCH);
         else
             ((TextView) findViewById(R.id.result_text)).setText(text);
     }
@@ -134,7 +134,7 @@ public class PocketSphinxActivity extends Activity implements RecognitionListene
     @Override
     public void onEndOfSpeech() {
         if (DIGITS_SEARCH.equals(recognizer.getSearchName())
-                || FORECAST_SEARCH.equals(recognizer.getSearchName())
+                //|| FORECAST_SEARCH.equals(recognizer.getSearchName())
                 || COMMAND_SEARCH.equals(recognizer.getSearchName()))
             switchSearch(KWS_SEARCH);
     }
@@ -168,7 +168,7 @@ public class PocketSphinxActivity extends Activity implements RecognitionListene
         recognizer.addGrammarSearch(COMMAND_SEARCH, commandGrammar);
         
         // Create language model search.
-        File languageModel = new File(modelsDir, "lm/weather.dmp");
-        recognizer.addNgramSearch(FORECAST_SEARCH, languageModel);
+        //File languageModel = new File(modelsDir, "lm/weather.dmp");
+        //recognizer.addNgramSearch(FORECAST_SEARCH, languageModel);
     }
 }

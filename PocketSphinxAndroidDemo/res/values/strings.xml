@@ -6,7 +6,7 @@
     <string name="stop">Stop</string>
     
     <string name="kws_caption">To start demonstration say \"oh mighty computer\".</string>
-    <string name="menu_caption">Say \&quot;digits\&quot; or \&quot;forecast\&quot; or \&quot;start command mode\&quot; to choose particular example.</string>
+    <string name="menu_caption">Say \&quot;digits\&quot; or or \&quot;command\&quot; to choose particular example.</string>
     <string name="digits_caption">Let\'s recognize some digits: say something like \"one two three four five\".</string>
     <string name="forecast_caption">Say something typical to a weather forecast like \"sunny spells on Wednesday\".</string>
     <string name="command_caption">Say \&quot;get help\&quot;, \&quot;report\&quot; or \&quot;user manual\&quot;</string>

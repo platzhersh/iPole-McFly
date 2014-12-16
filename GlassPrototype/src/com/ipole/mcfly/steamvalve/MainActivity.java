@@ -1,4 +1,3 @@
-// Copyright 2007-2014 Metaio GmbH. All rights reserved.
 package com.ipole.mcfly.steamvalve;
 
 import java.io.File;
@@ -37,6 +36,8 @@ public class MainActivity extends Activity
 		// extract all the assets
 		mTask = new AssetsExtracter();
 		mTask.execute(0);
+		
+		// setup PocketSphinx
 
 	}
 
