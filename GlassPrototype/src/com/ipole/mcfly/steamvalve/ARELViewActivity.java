@@ -7,10 +7,12 @@ import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 import java.io.File;
 import java.io.IOException;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.metaio.sdk.ARELActivity;
@@ -30,6 +32,7 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
 	}
 	
 	
+	@SuppressLint("SetJavaScriptEnabled") 
 	protected void onStart() 
 	{
 	    super.onStart();
@@ -39,8 +42,10 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
 
 	    // attach a WebView to the AREL interpreter and initialize it
 	    mARELInterpreter.initWebView(mWebView, this);
-
+	    mWebView.getSettings().setJavaScriptEnabled(true);
 	    mWebView.addJavascriptInterface(new JsObject(), "myInterface");
+	    //myWebView.loadUrl("file:///android_asset/html/index.html");
+	    //makeText(getApplicationContext(), "WebView ready " + mWebView.getUrl(), Toast.LENGTH_LONG).show();
 
 	}
 
@@ -59,6 +64,8 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
     private static final String REPORT_SEARCH = "reporting";
     private static final String ASSISTANCE_SEARCH = "assistance call";
     private static final String DIALOG_SEARCH = "dialog";
+    //private static final String ACCEPT = "accept";
+    //private static final String CANCEL = "cancel";
 
     private SpeechRecognizer recognizer;
     
@@ -66,8 +73,7 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
     public void onCreate(Bundle state) {
         super.onCreate(state);
 
-        setContentView(R.layout.main);
-        makeText(getApplicationContext(), "Preparing the recognizer", Toast.LENGTH_LONG).show();
+        makeText(getApplicationContext(), "Starting voice recognition", Toast.LENGTH_LONG).show();
                 
 
         // Recognizer initialization is a time-consuming and it involves IO,
@@ -93,6 +99,7 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
                 	Log.e("Sphinx", result.toString());
                 } else {
                 	System.out.println("MENU_SEARCH == null: " + (MENU_SEARCH == null));
+                	makeText(getApplicationContext(), "Voice recognition ready", Toast.LENGTH_LONG).show();
                     switchSearch(MENU_SEARCH);
                 }
             }
@@ -102,11 +109,20 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
     @Override
     public void onPartialResult(Hypothesis hypothesis) {
         String text = hypothesis.getHypstr();
-        if (text.equals(JOB_SEARCH))
-            switchSearch(JOB_SEARCH);
-        else if (text.equals(ASSISTANCE_SEARCH) | text.equals(REPORT_SEARCH)) {
+        if (text.equals(JOB_SEARCH)) {
+        	// call Javascript
+        	mWebView.loadUrl("javascript:toastFunctionTL()");
+        	switchSearch(JOB_SEARCH);
+        }            
+        else if (text.equals(ASSISTANCE_SEARCH)){
+        	mWebView.loadUrl("javascript:toastFunctionBR()");
         	switchSearch(MENU_SEARCH);
         }
+        else if(text.equals(REPORT_SEARCH)) {
+        	mWebView.loadUrl("javascript:toastFunctionTR()");
+        	switchSearch(MENU_SEARCH);
+        }
+        	
     }
 
     @Override
@@ -119,21 +135,12 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
 
     @Override
     public void onBeginningOfSpeech() {
-    	//makeText(getApplicationContext(), "beginning of speech", Toast.LENGTH_SHORT).show();
+    
     }
 
     @Override
     public void onEndOfSpeech() {
-    	//makeText(getApplicationContext(), "end of speech", Toast.LENGTH_SHORT).show();
-        /*if (DIGITS_SEARCH.equals(recognizer.getSearchName())
-                //|| FORECAST_SEARCH.equals(recognizer.getSearchName())
-                || COMMAND_SEARCH.equals(recognizer.getSearchName()))
-            switchSearch(KWS_SEARCH);*/
-    	//switchSearch(MENU_SEARCH);
-  	
-    	switchSearch(recognizer.getSearchName());
-    	makeText(getApplicationContext(), "end of speech", Toast.LENGTH_SHORT).show();
-    	
+       	switchSearch(recognizer.getSearchName());
     }
 
     private void switchSearch(String searchName) {

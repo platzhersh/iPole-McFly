@@ -2,6 +2,77 @@
 
 //arel.Debug.activate();
 
+/* ---------------------- custom global functions ---------------------- */
+var current = "";
+    var tablet_connected = 0;
+    var video_active = 0;
+    
+    var status_icons = "<img src='img/status_electricity.png' /><img src='img/status_heavy.png' /><img src='img/status_helmet.png' />";
+    var status_icon_tablet = "<img src='img/status_tablet.png' />";
+    var status_icon_video_active = "<img src='img/status_video_active.png' />";
+    //var status_icon_video_inactive = "<img src='img/status_video_inactive.png' />";
+    
+    var setStatusIcons = function() {
+        document.getElementById("bottomLeft").innerHTML = status_icons;
+        if (tablet_connected == 1) {
+                document.getElementById("bottomLeft").innerHTML += status_icon_tablet;
+        }
+    }
+
+    var toastFunctionTL = function() { 
+        document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_active.png";
+        document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_inactive.png";
+        setStatusIcons();
+        document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_inactive.png";
+        //window.myInterface.showToast("job description");
+        current = "job";
+    };
+    var toastFunctionTR = function() { 
+        document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_inactive.png";
+        document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_active.png";
+        setStatusIcons();
+        document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_inactive.png";
+        //window.myInterface.showToast("reporting"); 
+        current = "report";
+    };
+    var toastFunctionBL = function() { 
+        //window.myInterface.showToast("status icons");
+        if (current == "" | current == "job") {
+            document.getElementById("container").style.display = 'table';
+            document.getElementById("notificationImg").src = 'img/notification_connect_tablet.jpg';
+            tablet_connected = 1;
+        } else if (current == "call") {
+            document.getElementById("container").style.display = 'table';
+            document.getElementById("notificationImg").src = 'img/notification_call_alstom.jpg';
+            video_active = 1;
+        }
+    };
+    
+    var notificationClick = function() { 
+        document.getElementById("notificationImg").src = '';
+        document.getElementById("container").style.display = 'none';
+        setStatusIcons();
+        if (video_active == 1) {
+            document.getElementById("bottomLeft").innerHTML += status_icon_video_active;
+        }
+    };
+    
+    var toastFunctionBR = function() { 
+        document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_inactive.png";
+        document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_inactive.png";
+        setStatusIcons();
+        if (video_active == 1) {
+          document.getElementById("bottomLeft").innerHTML += status_icon_video_active;
+        } 
+        document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_active.png";
+        //window.myInterface.showToast("assistance call"); 
+        current = "call";
+        };
+
+
+
+/* ---------------------- end custom global functions ---------------------- */
+
 var methodExists = function (object, method) {
     return typeof object !== 'undefined' && typeof method === 'function';
 };
@@ -918,71 +989,7 @@ arel.sceneReady(function() {
 	document.body.innerHTML += '<div id="help" style="position: absolute; top: 0px; right: 0px;line-height: 40px;"><h2 style="font-family: Helvetica;margin: 0 10 0 0;">?</h2></div>';
 	*/
 	
-	var current = "";
-	var tablet_connected = 0;
-    var video_active = 0;
 	
-	var status_icons = "<img src='img/status_electricity.png' /><img src='img/status_heavy.png' /><img src='img/status_helmet.png' />";
-	var status_icon_tablet = "<img src='img/status_tablet.png' />";
-	var status_icon_video_active = "<img src='img/status_video_active.png' />";
-    //var status_icon_video_inactive = "<img src='img/status_video_inactive.png' />";
-	
-    var setStatusIcons = function() {
-        document.getElementById("bottomLeft").innerHTML = status_icons;
-        if (tablet_connected == 1) {
-                document.getElementById("bottomLeft").innerHTML += status_icon_tablet;
-        }
-    }
-
-	var toastFunctionTL = function() { 
-		document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_active.png";
-		document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_inactive.png";
-		setStatusIcons();
-		document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_inactive.png";
-		//window.myInterface.showToast("job description");
-		current = "job";
-	};
-	var toastFunctionTR = function() { 
-		document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_inactive.png";
-		document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_active.png";
-		setStatusIcons();
-		document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_inactive.png";
-		//window.myInterface.showToast("reporting"); 
-		current = "report";
-	};
-	var toastFunctionBL = function() { 
-		//window.myInterface.showToast("status icons");
-		if (current == "" | current == "job") {
-			document.getElementById("container").style.display = 'table';
-			document.getElementById("notificationImg").src = 'img/notification_connect_tablet.jpg';
-			tablet_connected = 1;
-		} else if (current == "call") {
-			document.getElementById("container").style.display = 'table';
-			document.getElementById("notificationImg").src = 'img/notification_call_alstom.jpg';
-            video_active = 1;
-		}
-	};
-	
-	var notificationClick = function() { 
-		document.getElementById("notificationImg").src = '';
-		document.getElementById("container").style.display = 'none';
-		setStatusIcons();
-        if (video_active == 1) {
-            document.getElementById("bottomLeft").innerHTML += status_icon_video_active;
-		}
-	};
-	
-	var toastFunctionBR = function() { 
-		document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_inactive.png";
-		document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_inactive.png";
-        setStatusIcons();
-		if (video_active == 1) {
-          document.getElementById("bottomLeft").innerHTML += status_icon_video_active;
-        } 
-        document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_active.png";
-		//window.myInterface.showToast("assistance call"); 
-		current = "call";
-		};
 	
 	document.getElementById("topLeft").onclick=toastFunctionTL;
 	document.getElementById("topRight").onclick=toastFunctionTR;
