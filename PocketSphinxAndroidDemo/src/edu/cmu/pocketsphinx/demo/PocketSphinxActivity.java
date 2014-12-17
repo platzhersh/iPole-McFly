@@ -49,13 +49,13 @@ import edu.cmu.pocketsphinx.SpeechRecognizer;
 
 public class PocketSphinxActivity extends Activity implements RecognitionListener {
 
-    private static final String KWS_SEARCH = "wakeup";
-    //private static final String FORECAST_SEARCH = "forecast";
-    private static final String DIGITS_SEARCH = "digits";
     private static final String MENU_SEARCH = "menu";
-    private static final String COMMAND_SEARCH = "command";
-    private static final String KEYPHRASE = "oh mighty computer";
-    
+    private static final String JOB_SEARCH = "job description";
+    private static final String REPORT_SEARCH = "reporting";
+    private static final String ASSISTANCE_SEARCH = "assistance call";
+    private static final String DIALOG_SEARCH = "dialog";
+    private static final String NEXT_SEARCH = "next step";
+    private static final String PREVIOUS_SEARCH = "previous step";
 
     private SpeechRecognizer recognizer;
     private HashMap<String, Integer> captions;
@@ -66,11 +66,11 @@ public class PocketSphinxActivity extends Activity implements RecognitionListene
 
         // Prepare the data for UI
         captions = new HashMap<String, Integer>();
-        captions.put(KWS_SEARCH, R.string.kws_caption);
         captions.put(MENU_SEARCH, R.string.menu_caption);
-        captions.put(DIGITS_SEARCH, R.string.digits_caption);
-        //captions.put(FORECAST_SEARCH, R.string.forecast_caption);
-        captions.put(COMMAND_SEARCH, R.string.command_caption);
+        captions.put(JOB_SEARCH, R.string.job_caption);
+        captions.put(REPORT_SEARCH, R.string.report_caption);
+        captions.put(ASSISTANCE_SEARCH, R.string.assistance_caption);
+
         setContentView(R.layout.main);
         ((TextView) findViewById(R.id.caption_text))
                 .setText("Preparing the recognizer");
@@ -97,7 +97,7 @@ public class PocketSphinxActivity extends Activity implements RecognitionListene
                     ((TextView) findViewById(R.id.caption_text))
                             .setText("Failed to init recognizer " + result);
                 } else {
-                    switchSearch(KWS_SEARCH);
+                    switchSearch(MENU_SEARCH);
                 }
             }
         }.execute();
@@ -106,37 +106,40 @@ public class PocketSphinxActivity extends Activity implements RecognitionListene
     @Override
     public void onPartialResult(Hypothesis hypothesis) {
         String text = hypothesis.getHypstr();
-        if (text.equals(KEYPHRASE))
-            switchSearch(MENU_SEARCH);
-        else if (text.equals(COMMAND_SEARCH))
-            switchSearch(COMMAND_SEARCH);
-        else if (text.equals(DIGITS_SEARCH))
-            switchSearch(DIGITS_SEARCH);
-        //else if (text.equals(FORECAST_SEARCH))
-            //switchSearch(FORECAST_SEARCH);
-        else
+        if (text.equals(JOB_SEARCH))
+            switchSearch(JOB_SEARCH);
+        else if (text.equals(ASSISTANCE_SEARCH) | text.equals(REPORT_SEARCH)) {
+        	switchSearch(MENU_SEARCH);
+        }
             ((TextView) findViewById(R.id.result_text)).setText(text);
     }
 
     @Override
     public void onResult(Hypothesis hypothesis) {
-        ((TextView) findViewById(R.id.result_text)).setText("");
         if (hypothesis != null) {
             String text = hypothesis.getHypstr();
             makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+            ((TextView) findViewById(R.id.result_text)).setText("");
         }
     }
 
     @Override
     public void onBeginningOfSpeech() {
+    	//makeText(getApplicationContext(), "beginning of speech", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onEndOfSpeech() {
-        if (DIGITS_SEARCH.equals(recognizer.getSearchName())
+    	//makeText(getApplicationContext(), "end of speech", Toast.LENGTH_SHORT).show();
+        /*if (DIGITS_SEARCH.equals(recognizer.getSearchName())
                 //|| FORECAST_SEARCH.equals(recognizer.getSearchName())
                 || COMMAND_SEARCH.equals(recognizer.getSearchName()))
-            switchSearch(KWS_SEARCH);
+            switchSearch(KWS_SEARCH);*/
+    	//switchSearch(MENU_SEARCH);
+  	
+    	switchSearch(recognizer.getSearchName());
+    	makeText(getApplicationContext(), "end of speech", Toast.LENGTH_SHORT).show();
+    	
     }
 
     private void switchSearch(String searchName) {
@@ -156,19 +159,16 @@ public class PocketSphinxActivity extends Activity implements RecognitionListene
         recognizer.addListener(this);
 
         // Create keyword-activation search.
-        recognizer.addKeyphraseSearch(KWS_SEARCH, KEYPHRASE);
+        // recognizer.addKeyphraseSearch(KWS_SEARCH, KEYPHRASE);
         // Create grammar-based searches.
         File menuGrammar = new File(modelsDir, "grammar/menu.gram");
         recognizer.addGrammarSearch(MENU_SEARCH, menuGrammar);
         
-        File digitsGrammar = new File(modelsDir, "grammar/digits.gram");
-        recognizer.addGrammarSearch(DIGITS_SEARCH, digitsGrammar);
+        File jobGrammar = new File(modelsDir, "grammar/manual.gram");
+        recognizer.addGrammarSearch(JOB_SEARCH, jobGrammar);
         
-        File commandGrammar = new File(modelsDir, "grammar/command.gram");
-        recognizer.addGrammarSearch(COMMAND_SEARCH, commandGrammar);
+        File dialogGrammar = new File(modelsDir, "grammar/manual.gram");
+        recognizer.addGrammarSearch(DIALOG_SEARCH, dialogGrammar);
         
-        // Create language model search.
-        //File languageModel = new File(modelsDir, "lm/weather.dmp");
-        //recognizer.addNgramSearch(FORECAST_SEARCH, languageModel);
     }
 }

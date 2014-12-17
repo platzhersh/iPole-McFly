@@ -1,6 +1,6 @@
 models/dict/cmu07a.dic
-models/grammar/command.gram
-models/grammar/digits.gram
+models/grammar/dialog.gram
+models/grammar/manual.gram
 models/grammar/menu.gram
 models/hmm/en-us-semi/README
 models/hmm/en-us-semi/feat.params
