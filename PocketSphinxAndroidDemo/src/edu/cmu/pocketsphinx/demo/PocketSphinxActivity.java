@@ -54,8 +54,6 @@ public class PocketSphinxActivity extends Activity implements RecognitionListene
     private static final String REPORT_SEARCH = "reporting";
     private static final String ASSISTANCE_SEARCH = "assistance call";
     private static final String DIALOG_SEARCH = "dialog";
-    private static final String NEXT_SEARCH = "next step";
-    private static final String PREVIOUS_SEARCH = "previous step";
 
     private SpeechRecognizer recognizer;
     private HashMap<String, Integer> captions;

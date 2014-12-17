@@ -1,5 +1,5 @@
 #JSGF V1.0;
 
-grammar menu;
+grammar mcfly.menu;
 
 public <item> = job description | reporting | assistance call;

@@ -1,5 +1,4 @@
 #JSGF V1.0;
+grammar mcfly.manual;
 
-grammar dialog;
-
-public <item> = next step | previous step;
+public <command> = next step | previous step | job description | reporting | assistance call;;

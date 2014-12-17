@@ -1,5 +1,4 @@
 #JSGF V1.0;
+grammar mcfly.dialog;
 
-grammar dialog;
-
-public <item> = accept | cancel;
+public <command> = accept | cancel | job description | reporting | assistance call;
