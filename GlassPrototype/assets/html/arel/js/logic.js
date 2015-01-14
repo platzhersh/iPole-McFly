@@ -3,9 +3,13 @@
 //arel.Debug.activate();
 
 /* ---------------------- custom global functions ---------------------- */
-var current = "";
+    var current = "";
+    var step = 7;
+    var helpMode = false;
+    var howtoVideoVisible = false;
     var tablet_connected = 0;
     var video_active = 0;
+
     
     var status_icons = "<img src='img/status_electricity.png' /><img src='img/status_heavy.png' /><img src='img/status_helmet.png' />";
     var status_icon_tablet = "<img src='img/status_tablet.png' />";
@@ -19,30 +23,33 @@ var current = "";
         if (tablet_connected == 1) {
                 document.getElementById("bottomLeft").innerHTML += status_icon_tablet;
         }
-    }
+    };
 
     var showNotification = function(imgPath) {
-        document.getElementById("container").style.display = 'table';
+        document.getElementById("container").style.display = "table";
         document.getElementById("notificationImg").src = imgPath;
-    }
+    };
     var hideNotification = function() {
-        document.getElementById("notificationImg").style.display = 'inline';
-        document.getElementById("notificationImg").src = '';
-        document.getElementById("container").style.display = 'none';
+        if (helpMode) hideHelp();
+        document.getElementById("notificationImg").style.display = "inline";
+        document.getElementById("notificationImg").src = "";
+        document.getElementById("container").style.display = "none";
         document.getElementById("additionalContent").innerHTML = "";
-    }
+    };
 
 
     /* state changing */
-    var toastFunctionTL = function() { 
-        document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_active.png";
+    var toastFunctionTL = function() {
+        hideNotification();
+        document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_active_"+step+".png";
         document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_inactive.png";
         setStatusIcons();
         document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_inactive.png";
         //window.myInterface.showToast("job description");
         current = "job";
     };
-    var toastFunctionTR = function() { 
+    var toastFunctionTR = function() {
+        hideNotification();
         document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_inactive.png";
         document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_active.png";
         setStatusIcons();
@@ -50,9 +57,10 @@ var current = "";
         //window.myInterface.showToast("reporting"); 
         current = "report";
     };
-    var toastFunctionBL = function() { 
+    var toastFunctionBL = function() {
+        hideNotification();
         //window.myInterface.showToast("status icons");
-        if (current == "" | current == "job") {
+        if (current === "" | current == "job") {
             showNotification("img/notification_connect_tablet.jpg");
             tablet_connected = 1;
         } else if (current == "call") {
@@ -61,7 +69,7 @@ var current = "";
         }
     };
     
-    var notificationClick = function() { 
+    var notificationClick = function() {
         hideNotification();
         setStatusIcons();
         if (video_active == 1) {
@@ -69,24 +77,22 @@ var current = "";
         }
     };
     
-    var toastFunctionBR = function() { 
+    var toastFunctionBR = function() {
+        hideNotification();
         document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_inactive.png";
         document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_inactive.png";
         setStatusIcons();
         if (video_active == 1) {
           document.getElementById("bottomLeft").innerHTML += status_icon_video_active;
-        } 
-        document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_active.png";
+        }
+        document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_active.png";;
         //window.myInterface.showToast("assistance call"); 
         current = "call";
         };
 
     var showHelp = function() {
-        /*hideHelp();
-        document.getElementById("container").style.display = 'table';
-        document.getElementById("notification").style.display = 'none';
-        document.getElementById("help-overlay").style.display = 'block';
-        */
+        hideNotification();
+        helpMode = true;
         document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/help_job_inactive.png";
         document.getElementById("topRight").getElementsByTagName("img")[0].src="img/help_report_inactive.png";
         document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/help_assistance_inactive.png";
@@ -96,7 +102,7 @@ var current = "";
         switch(current) {
             default:
             case "job":
-                document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/help_job_active.png";
+                document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/help_job_active_"+step+".png";
                 document.getElementById("additionalContent").innerHTML = "<img src=\"img/help_showvideo.png\" />";
                 break;
             case "report":
@@ -109,15 +115,6 @@ var current = "";
     };
 
     var hideHelp = function() {
-        /*
-        document.getElementById("notification").style.display = 'block';
-        document.getElementById("help-job").style.display = 'none';
-        document.getElementById("help-report").style.display = 'none';
-        document.getElementById("help-call").style.display = 'none';
-        document.getElementById("help-overlay").style.display = 'none';
-        document.getElementById("container").style.display = 'none';
-        */
-        hideNotification();
         document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_inactive.png";
         document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_inactive.png";
         document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_inactive.png";
@@ -125,7 +122,7 @@ var current = "";
         switch(current) {
             default:
             case "job":
-                document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_active.png";
+                document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_active_"+step+".png";
                 break;
             case "report":
                 document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_active.png";
@@ -134,16 +131,32 @@ var current = "";
                 document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_active.png";
                 break;
         }
+        helpMode = false;
+    };
+
+    var nextStep = function() {
+        step = 8;
+        if (current == "job") document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_active_"+step+".png";
+        else document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_inactive.png";
+        if (howtoVideoVisible) playVideo();
+    };
+    var previousStep = function() {
+        step = 7;
+        if (current == "job") document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_active_"+step+".png";
+        else document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_inactive.png";
+        if (howtoVideoVisible) playVideo();
     };
 
     var backToTheFuture = function() {
+        hideNotification();
         showNotification("img/giphy.gif");
     };
 
     var playVideo = function() {
-        showNotification("img/gif/step7.gif");
+        hideNotification();
+        showNotification("img/gif/step"+step+".gif");
+        howtoVideoVisible = true;
     };
-
 
 /* ---------------------- end custom global functions ---------------------- */
 

@@ -73,7 +73,14 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
     private static final String CANCEL = "cancel";
     private static final String HAPPY_EASTER = "back to the future";
     private static final String PLAY_VIDEO = "play video";
+    private static final String SHOW_VIDEO = "show video";
     private static final String VIDEO = "video";
+    private static final String ANIMATION = "animation";
+    private static final String NEXT_STEP = "next step";
+    private static final String NEXT = "next";
+    private static final String PREV_STEP = "previous step";
+    private static final String PREV = "previous";
+    private static final String BACK = "back";
     //private static final String ACCEPT = "accept";
     //private static final String CANCEL = "cancel";
 
@@ -131,14 +138,19 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
         else if(text.equals(REPORT_SEARCH)) {
         	mWebView.loadUrl("javascript:toastFunctionTR()");
         	switchSearch(MENU_SEARCH);
+        	
         } else if (text.equals(SHOW_HELP) | text.equals(HELP)) {
         	mWebView.loadUrl("javascript:showHelp()");      
         } else if (text.equals(HIDE_HELP) | text.equals(CLOSE_HELP) | text.equals(CLOSE) | text.equals(CANCEL)) {
-        	mWebView.loadUrl("javascript:hideHelp()");      
+        	mWebView.loadUrl("javascript:hideNotification()");      
         } else if (text.equals(HAPPY_EASTER)) {
         	mWebView.loadUrl("javascript:backToTheFuture()");      
-        } else if (text.equals(PLAY_VIDEO) | text.equals(VIDEO)) {
+        } else if (text.equals(PLAY_VIDEO) | text.equals(SHOW_VIDEO) | text.equals(VIDEO) | text.equals(ANIMATION)) {
         	mWebView.loadUrl("javascript:playVideo()");      
+        } else if (text.equals(NEXT_STEP) | text.equals(NEXT)) {
+        	mWebView.loadUrl("javascript:nextStep()");      
+        } else if (text.equals(PREV_STEP) | text.equals(PREV) | text.equals(BACK)) {
+        	mWebView.loadUrl("javascript:previousStep()");      
         }
         
         	

@@ -1,4 +1,4 @@
 #JSGF V1.0;
 grammar mcfly.dialog;
 
-public <command> = accept | cancel | close | job description | user manual | reporting | assistance call | help | show help | hide help | close help | back to the future;
+public <command> = accept | cancel | job description | user manual | reporting | assistance call | help | show help | hide help | close help | close |  back to the future;
