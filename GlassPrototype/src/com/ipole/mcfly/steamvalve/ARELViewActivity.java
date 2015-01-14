@@ -12,7 +12,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.metaio.sdk.ARELActivity;
@@ -32,6 +31,7 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
 	}
 	
 	
+	@Override
 	@SuppressLint("SetJavaScriptEnabled") 
 	protected void onStart() 
 	{
@@ -64,6 +64,13 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
     private static final String REPORT_SEARCH = "reporting";
     private static final String ASSISTANCE_SEARCH = "assistance call";
     private static final String DIALOG_SEARCH = "dialog";
+    private static final String SHOW_HELP = "show help";
+    private static final String HELP = "help";
+    private static final String HIDE_HELP = "hide help";
+    private static final String CLOSE_HELP = "close help";
+    private static final String CLOSE = "close";
+    private static final String CANCEL = "cancel";
+    private static final String HAPPY_EASTER = "back to the future";
     //private static final String ACCEPT = "accept";
     //private static final String CANCEL = "cancel";
 
@@ -121,7 +128,14 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
         else if(text.equals(REPORT_SEARCH)) {
         	mWebView.loadUrl("javascript:toastFunctionTR()");
         	switchSearch(MENU_SEARCH);
+        } else if (text.equals(SHOW_HELP) | text.equals(HELP)) {
+        	mWebView.loadUrl("javascript:showHelp()");      
+        } else if (text.equals(HIDE_HELP) | text.equals(CLOSE_HELP) | text.equals(CLOSE) | text.equals(CANCEL)) {
+        	mWebView.loadUrl("javascript:hideHelp()");      
+        } else if (text.equals(HAPPY_EASTER)) {
+        	mWebView.loadUrl("javascript:backToTheFuture()");      
         }
+        
         	
     }
 

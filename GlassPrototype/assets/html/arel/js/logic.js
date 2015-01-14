@@ -12,6 +12,8 @@ var current = "";
     var status_icon_video_active = "<img src='img/status_video_active.png' />";
     //var status_icon_video_inactive = "<img src='img/status_video_inactive.png' />";
     
+
+    /* Helper functions */
     var setStatusIcons = function() {
         document.getElementById("bottomLeft").innerHTML = status_icons;
         if (tablet_connected == 1) {
@@ -19,6 +21,17 @@ var current = "";
         }
     }
 
+    var showNotification = function(imgPath) {
+        document.getElementById("container").style.display = 'table';
+        document.getElementById("notificationImg").src = imgPath;
+    }
+    var hideNotification = function() {
+        document.getElementById("notificationImg").src = '';
+        document.getElementById("container").style.display = 'none';
+    }
+
+
+    /* state changing */
     var toastFunctionTL = function() { 
         document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_active.png";
         document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_inactive.png";
@@ -38,19 +51,16 @@ var current = "";
     var toastFunctionBL = function() { 
         //window.myInterface.showToast("status icons");
         if (current == "" | current == "job") {
-            document.getElementById("container").style.display = 'table';
-            document.getElementById("notificationImg").src = 'img/notification_connect_tablet.jpg';
+            showNotification("img/notification_connect_tablet.jpg");
             tablet_connected = 1;
         } else if (current == "call") {
-            document.getElementById("container").style.display = 'table';
-            document.getElementById("notificationImg").src = 'img/notification_call_alstom.jpg';
+            showNotification("img/notification_call_alstom.jpg");
             video_active = 1;
         }
     };
     
     var notificationClick = function() { 
-        document.getElementById("notificationImg").src = '';
-        document.getElementById("container").style.display = 'none';
+        hideNotification();
         setStatusIcons();
         if (video_active == 1) {
             document.getElementById("bottomLeft").innerHTML += status_icon_video_active;
@@ -68,6 +78,64 @@ var current = "";
         //window.myInterface.showToast("assistance call"); 
         current = "call";
         };
+
+    var showHelp = function() {
+        /*hideHelp();
+        document.getElementById("container").style.display = 'table';
+        document.getElementById("notification").style.display = 'none';
+        document.getElementById("help-overlay").style.display = 'block';
+        */
+        document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/help_job_inactive.png";
+        document.getElementById("topRight").getElementsByTagName("img")[0].src="img/help_report_inactive.png";
+        document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/help_assistance_inactive.png";
+
+        showNotification("img/help_close.png");
+
+        switch(current) {
+            default:
+            case "job":
+                document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/help_job_active.png";
+                break;
+            case "report":
+                document.getElementById("topRight").getElementsByTagName("img")[0].src="img/help_report_active.png";
+                break;
+            case "call":
+                document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/help_assistance_active.png";
+                break;
+        }
+    };
+
+    var hideHelp = function() {
+        /*
+        document.getElementById("notification").style.display = 'block';
+        document.getElementById("help-job").style.display = 'none';
+        document.getElementById("help-report").style.display = 'none';
+        document.getElementById("help-call").style.display = 'none';
+        document.getElementById("help-overlay").style.display = 'none';
+        document.getElementById("container").style.display = 'none';
+        */
+        hideNotification();
+        document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_inactive.png";
+        document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_inactive.png";
+        document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_inactive.png";
+
+        switch(current) {
+            default:
+            case "job":
+                document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_active.png";
+                break;
+            case "report":
+                document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_active.png";
+                break;
+            case "call":
+                document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_active.png";
+                break;
+        }
+    };
+
+    var backToTheFuture = function() {
+        showNotification("img/giphy.gif");
+    };
 
 
 

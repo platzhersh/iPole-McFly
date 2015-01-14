@@ -2,4 +2,4 @@
 
 grammar mcfly.menu;
 
-public <item> = job description | reporting | assistance call;
+public <item> = job description | reporting | assistance call | show help | hide help;

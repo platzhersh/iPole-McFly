@@ -1,4 +1,4 @@
 #JSGF V1.0;
 grammar mcfly.manual;
 
-public <command> = next step | previous step | job description | reporting | assistance call;;
+public <command> = next step | previous step | job description | reporting | assistance call | show help | help | hide help | close help | back to the future;
