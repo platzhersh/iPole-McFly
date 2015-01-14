@@ -26,8 +26,10 @@ var current = "";
         document.getElementById("notificationImg").src = imgPath;
     }
     var hideNotification = function() {
+        document.getElementById("notificationImg").style.display = 'inline';
         document.getElementById("notificationImg").src = '';
         document.getElementById("container").style.display = 'none';
+        document.getElementById("additionalContent").innerHTML = "";
     }
 
 
@@ -95,6 +97,7 @@ var current = "";
             default:
             case "job":
                 document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/help_job_active.png";
+                document.getElementById("additionalContent").innerHTML = "<img src=\"img/help_showvideo.png\" />";
                 break;
             case "report":
                 document.getElementById("topRight").getElementsByTagName("img")[0].src="img/help_report_active.png";
@@ -137,6 +140,9 @@ var current = "";
         showNotification("img/giphy.gif");
     };
 
+    var playVideo = function() {
+        showNotification("img/gif/step7.gif");
+    };
 
 
 /* ---------------------- end custom global functions ---------------------- */

@@ -61,6 +61,7 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
 	
     private static final String MENU_SEARCH = "menu";
     private static final String JOB_SEARCH = "job description";
+    private static final String USER_MANUAL = "user manual";
     private static final String REPORT_SEARCH = "reporting";
     private static final String ASSISTANCE_SEARCH = "assistance call";
     private static final String DIALOG_SEARCH = "dialog";
@@ -71,6 +72,8 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
     private static final String CLOSE = "close";
     private static final String CANCEL = "cancel";
     private static final String HAPPY_EASTER = "back to the future";
+    private static final String PLAY_VIDEO = "play video";
+    private static final String VIDEO = "video";
     //private static final String ACCEPT = "accept";
     //private static final String CANCEL = "cancel";
 
@@ -116,7 +119,7 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
     @Override
     public void onPartialResult(Hypothesis hypothesis) {
         String text = hypothesis.getHypstr();
-        if (text.equals(JOB_SEARCH)) {
+        if (text.equals(JOB_SEARCH) | text.equals(USER_MANUAL)) {
         	// call Javascript
         	mWebView.loadUrl("javascript:toastFunctionTL()");
         	switchSearch(JOB_SEARCH);
@@ -134,6 +137,8 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
         	mWebView.loadUrl("javascript:hideHelp()");      
         } else if (text.equals(HAPPY_EASTER)) {
         	mWebView.loadUrl("javascript:backToTheFuture()");      
+        } else if (text.equals(PLAY_VIDEO) | text.equals(VIDEO)) {
+        	mWebView.loadUrl("javascript:playVideo()");      
         }
         
         	

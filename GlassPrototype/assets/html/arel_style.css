@@ -82,3 +82,11 @@ body
 	height: 85px;
 	text-align: center;
 }
+#notification img {
+	max-width: 396px;
+	height: auto;
+}
+
+#additionalContent {
+	margin-top: 10px;
+}
