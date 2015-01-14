@@ -160,7 +160,7 @@ public class ARELViewActivity extends ARELActivity implements RecognitionListene
     public void onResult(Hypothesis hypothesis) {
         if (hypothesis != null) {
             String text = hypothesis.getHypstr();
-            makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+            //makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         }
     }
 

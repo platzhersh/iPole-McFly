@@ -5,7 +5,7 @@
 /* ---------------------- custom global functions ---------------------- */
     var current = "";
     var step = 7;
-    var helpMode = false;
+    var helpMode = true;
     var howtoVideoVisible = false;
     var tablet_connected = 0;
     var video_active = 0;
@@ -81,11 +81,12 @@
         hideNotification();
         document.getElementById("topLeft").getElementsByTagName("img")[0].src="img/job_inactive.png";
         document.getElementById("topRight").getElementsByTagName("img")[0].src="img/report_inactive.png";
+        showNotification("img/notification_call_alstom.jpg");
         setStatusIcons();
         if (video_active == 1) {
           document.getElementById("bottomLeft").innerHTML += status_icon_video_active;
         }
-        document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_active.png";;
+        document.getElementById("bottomRight").getElementsByTagName("img")[0].src="img/assistance_active.png";
         //window.myInterface.showToast("assistance call"); 
         current = "call";
         };
